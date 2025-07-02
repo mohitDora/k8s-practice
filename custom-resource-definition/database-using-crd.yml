@@ -1,0 +1,20 @@
+# my-first-database.yaml
+apiVersion: stable.example.com/v1 # Matches the group and version from your CRD
+kind: Database # Matches the kind from your CRD
+metadata:
+  name: my-app-db # The name of your database instance
+  namespace: default # Must be in a namespace if scope is Namespaced
+spec: # This must conform to the 'spec' schema defined in the CRD
+  engine: postgres
+  version: "14"
+  size: medium
+  storageGB: 50
+  users:
+    - name: admin
+      passwordSecretRef:
+        name: db-admin-password
+        key: password
+    - name: app-user
+      passwordSecretRef:
+        name: db-app-password
+        key: password

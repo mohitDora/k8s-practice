@@ -1,0 +1,23 @@
+# my-tolerated-app-deployment.yaml
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: my-tolerated-app
+spec:
+  containers:
+    - name: app-container
+      image: nginx:latest
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+  tolerations:
+    - key: "environment"
+      operator: "Equal"
+      value: "dev"
+      effect: "NoSchedule"

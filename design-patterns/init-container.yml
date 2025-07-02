@@ -1,0 +1,39 @@
+# init-demo-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: init-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: init-demo
+  template:
+    metadata:
+      labels:
+        app: init-demo
+    spec:
+      initContainers:
+        - name: setup-files
+          image: busybox:latest
+          command: ["sh", "-c", "echo 'Setting up files...'; sleep 5; echo 'Hello from Init Container!' > /workdir/init_message.txt"]
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+      containers:
+        - name: main-app
+          image: busybox:latest
+          command: ["sh", "-c", "sleep 10; echo 'Main app starting...'; cat /workdir/init_message.txt; sleep 3600"]
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: workdir
+              mountPath: /workdir
+      volumes:
+        - name: workdir
+          emptyDir: {}
