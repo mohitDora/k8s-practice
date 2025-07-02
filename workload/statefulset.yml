@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-mongo-statefulset
+spec:
+  selector:
+    matchLabels:
+      app: my-mongo
+  serviceName: my-mongo-service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: my-mongo
+    spec:
+      containers:
+      - name: my-mongo-container
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: my-mongo-pvc
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: my-mongo-pvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: standard
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-mongo-service
+spec:
+  selector:
+    app: my-mongo
+  ports:
+  - port: 27017
+    targetPort: 27017
+    clusterIP: None
