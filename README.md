@@ -1,29 +1,57 @@
+# Kubernetes & Helm Command Reference
+
+## Basic kubectl Commands
+
+```sh
 kubectl apply -f <file_name>
 kubectl get <resource_name> [name]
-ex : kubectl get pods, kubectl get pod <name>, kubectl get all, kubectl get pods -n <namespace>
+# ex: kubectl get pods, kubectl get pod <name>, kubectl get all, kubectl get pods -n <namespace>
 kubectl describe <resource_name> <name>
 kubectl logs <pod_name> | -c <container_name>
 kubectl exex -it <pod_name> [ -c container_name ] --command 
 kubectl delete <resource_name> <name> | -f <file_name>
+```
 
-#taint
-kubectl taint nodes <node_name> <key>=<value>:<effect>
-#untaint
+## Node Taints
+
+```sh
+# taint
+tkubectl taint nodes <node_name> <key>=<value>:<effect>
+# untaint
 kubectl taint nodes <node_name> <key>=<value>:<effect>-
+```
 
-#helm
+## Helm Commands
+
+```sh
+# Add a repo
 helm repo add <repo_name>
+# Search repo
 helm serach repo <repo_name>
+# Install a release
 helm install <release_name> <chart_name>
+```
 
-#upgrade a release
+### Upgrade a Release
+
+```sh
 helm upgrade <release_name> <chart_name> --version <some_version>
+```
 
-#show helm history
+### Show Helm History
+
+```sh
 helm history <release_name>
+```
 
-#rollback a release
+### Rollback a Release
+
+```sh
 helm rollback <release_name> <revision>
+```
 
-#unistall a release
+### Uninstall a Release
+
+```sh
 helma unistall <release_name>
+``` 
